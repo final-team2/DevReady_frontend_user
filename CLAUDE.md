@@ -144,7 +144,15 @@ server.py/requirements_lock.txt→AI), gitignore_* 3개 중 맞는 하나만 골
 - 모델: `LGAI-EXAONE/EXAONE-Deep-7.8B`, **`revision='e3f42b18f6b1'` 고정**
 - 변경이 꼭 필요하면 → 별도 브랜치 + 정성채 리뷰. 바꾼 뒤 **2회 안에 문제 생기면 즉시 롤백.**
 
-> 백엔드·프론트의 레포별 세부 규칙은 각 담당자가 이 표에 이어서 보강한다.
+**백엔드 레포 (Spring) — 고정 스택**
+`DevReady_backend_admin` · `DevReady_backend_user` 공통. 아래 버전·구성으로 통일한다. (버전 변경, 특히 Spring Boot·Java는 별도 브랜치 + 팀 합의 후에만)
+- **Java 21** (Oracle OpenJDK 21) · **Spring Boot 3.5.15** · **Gradle (Groovy)** · **MySQL 8**
+- 빌드·패키징: Gradle Groovy DSL · 패키징 **Jar** · 설정 파일은 **YAML**(`application.yml`)
+- 그룹·패키지: 그룹 `com.devready` / 패키지 `com.devready.<repo>` (예: `com.devready.backend_admin`)
+- 주요 의존성: Spring Web · Spring Security · MyBatis Framework · JDBC API · MySQL Driver · Lombok · Spring Boot DevTools · Spring Configuration Processor
+- 비밀값은 `application-secret.yml`·`application-local.yml`에 두고 **커밋 금지** (5번·7번 표 준수)
+
+> 프론트(React)의 레포별 세부 규칙은 담당자가 이 표에 이어서 보강한다.
 
 ---
 
