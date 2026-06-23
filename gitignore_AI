@@ -1,0 +1,40 @@
+# ===== DevReady AI 레포 (.gitignore) =====
+# 각 레포 루트에 .gitignore 로 이름 바꿔 넣으세요.
+
+# --- 비밀값 (최우선 차단) ---
+.env
+.env.*
+*.pem
+*.key
+.git-credentials
+
+# --- 모델 가중치·인덱스 (대용량) ---
+*.safetensors
+*.bin
+*.pt
+*.gguf
+*.faiss
+*.index
+hf_cache/
+lora_adapter*/
+
+# --- AI Hub 원본 데이터 (재배포 금지) ---
+data/raw/
+sft_data.jsonl
+train.jsonl
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# --- IDE / OS / 로그 ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+tmp/

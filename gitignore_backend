@@ -1,0 +1,25 @@
+# ===== DevReady 백엔드 레포 (Spring) (.gitignore) =====
+# 각 레포 루트에 .gitignore 로 이름 바꿔 넣으세요.
+
+# --- 비밀값 (최우선 차단) ---
+.env
+**/application-secret.yml
+**/application-local.yml
+*.pem
+*.key
+
+# --- Gradle / Java ---
+build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+*.class
+out/
+bin/
+
+# --- IDE / OS / 로그 ---
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+*.log
