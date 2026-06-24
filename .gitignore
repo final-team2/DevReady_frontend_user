@@ -1,0 +1,24 @@
+# ===== DevReady 프론트 레포 (React/Vite) (.gitignore) =====
+# 각 레포 루트에 .gitignore 로 이름 바꿔 넣으세요.
+
+# --- 비밀값 (최우선 차단) ---
+.env
+.env.*
+.env.local
+
+# --- Node / 빌드 ---
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+
+# --- IDE / OS / 로그 ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
