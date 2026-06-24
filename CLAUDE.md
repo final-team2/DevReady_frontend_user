@@ -157,7 +157,9 @@ server.py/requirements_lock.txt→AI), gitignore_* 3개 중 맞는 하나만 골
 - 주요 의존성: Spring Web · Spring Security · MyBatis Framework · JDBC API · MySQL Driver · Lombok · Spring Boot DevTools · Spring Configuration Processor
 - 비밀값은 `application-secret.yml`·`application-local.yml`에 두고 **커밋 금지** (5번·7번 표 준수)
 
-> 프론트(React)의 레포별 세부 규칙은 담당자가 이 표에 이어서 보강한다.
+**프론트 레포 (React) — UI 라이브러리**
+`DevReady_frontend_admin` · `DevReady_frontend_user` 공통.
+- **MUI(Material UI) 라이브러리를 쓴다.** (`@mui/material` 기반 컴포넌트로 화면 구성)
 
 ---
 
