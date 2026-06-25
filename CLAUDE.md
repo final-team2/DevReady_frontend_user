@@ -1,16 +1,21 @@
-# CLAUDE.md — DevReady 협업·안전 작업 규칙 (AI·백엔드·프론트 3레포 공통)
+# CLAUDE.md — DevReady 협업·안전 작업 규칙 (AI·백엔드·프론트 5레포 공통)
+
+> **⚠️ 시작 전 필독 — 이 문서를 수행하기 전에 `PROJECT_STRUCTURE.md`를 먼저 읽는다.**
+> 어떤 작업이든 시작하기 전에 **`PROJECT_STRUCTURE.md`를 먼저 끝까지 읽어** 레포 구성·폴더 구조·네이밍·환경변수 기준을 파악하고 그 체계를 따른다. 이 `CLAUDE.md`의 규칙(특히 **5번 소유권 맵 · 6번 클래스 네이밍 · 7번 레포 판별**)은 모두 `PROJECT_STRUCTURE.md`가 정한 폴더·네이밍 체계를 **전제로** 동작한다 — 구조를 모른 채 안전 규칙만 적용하면 파일을 엉뚱한 폴더에 만들거나 네이밍을 어기게 된다.
+> **읽는 순서: ① `PROJECT_STRUCTURE.md`(구조 파악) → ② 이 `CLAUDE.md`(안전 규칙) → ③ 작업 시작.**
+> Claude Code는 이 `CLAUDE.md`만 매 세션 자동 로드하고 `PROJECT_STRUCTURE.md`는 자동 로드하지 않는다 → **작업 전 `PROJECT_STRUCTURE.md`를 직접 열어 읽는다.** 웹(claude.ai)은 둘 다 자동 로드가 안 되므로 **두 문서를 함께 붙여** 지시한다.
 
 > 이 저장소에서 작업하는 **모든 사람과 모든 AI(Claude 포함)는 작업 시작 전에 이 문서를 끝까지 읽는다.**
 > **목적**: 누가 작업하든 — 무료 요금제·Sonnet·사고(thinking) 끄기·저사양 설정이라도 — **충돌·데이터 손실·범위 이탈 없이** 안전하게 기여하기 위함.
 >
 > - **Claude Code(터미널/IDE)** 는 이 파일을 매 세션 자동으로 읽는다.
 > - **웹(claude.ai)** 은 자동 로드가 안 된다 → 8번 템플릿을 복붙해서 지시한다.
-> - 이 문서는 **3개 레포 공통**이다. 작업 전 **7번 "레포 판별"** 로 자기 레포 규칙을 먼저 확인한다.
+> - 이 문서는 **5개 레포 공통**이다. 작업 전 **7번 "레포 판별"** 로 자기 레포 규칙을 먼저 확인한다.
 
-> **📐 프로젝트 구조·폴더·네이밍·설정의 정본은 `PROJECT_STRUCTURE.md`다. 작업 전 이 파일과 함께 반드시 읽는다.**
-> 이 `CLAUDE.md`는 *행동 규칙*(협업·안전·git)을, `PROJECT_STRUCTURE.md`는 *구조 기준*(어디에 무엇을 두는가)을 담당한다. 구조 관련 판단은 `PROJECT_STRUCTURE.md`를 우선한다.
-
-@PROJECT_STRUCTURE.md
+> **관련 문서** (이 문서는 "안전 규칙"만 다룬다. 아래는 각자 원본을 참조하고, 여기에 복사하지 않는다.)
+> - 기능·정책 명세: **`요구사항정의서.md`** (81개 기능 / 영역별 정책)
+> - 폴더 구조·네이밍·설정·환경변수: **`PROJECT_STRUCTURE.md`** ← **작업 전 먼저 읽는다 (맨 위 ⚠️ 필독 안내 참조)**
+> - AI 모델·파이프라인: **`AI시스템명세.md`**
 
 ---
 
@@ -27,7 +32,11 @@
 - ❌ 지시 범위 밖 파일 변경 (리팩터링·정리·"개선"·주석 정리·코드 스타일 변경 포함)
 - ❌ `git push --force` / `git reset --hard`(공유 브랜치) / `git rebase`(공유 브랜치) / `rm -rf`
 - ❌ `main`·`develop` 브랜치에 직접 커밋·푸시
-- ❌ 비밀값 커밋: `.env`, API 키, 토큰, 비밀번호, 모델 가중치(`.bin`/`.safetensors`), 대용량 데이터셋
+- ❌ 비밀값·환경파일 커밋:
+  - `.env` · `.env.development` · `.env.production` · `.env.local`
+  - `application-local.yml` · API 키 · 토큰 · 비밀번호
+  - 모델 가중치(`.bin`/`.safetensors`) · 대용량 데이터셋
+  - → 비밀값은 개발 중 **레포 밖 경로로 공유**하고, 배포 시 **GitHub Secrets**로 옮긴다 (`PROJECT_STRUCTURE.md` 5번 참조). 어떤 경우에도 레포에 커밋하지 않는다.
 - ❌ AI 고정 스택 변경 (**7번 — AI 레포** 목록) — 버전·`revision` 절대 변경 금지
 - ❌ 다른 팀원 담당 모듈 수정 (5번 소유권 맵)
 - ❌ 레포 전체에 포맷터/린터 실행 (Prettier·Black 등으로 남의 파일까지 변경)
@@ -97,25 +106,27 @@ feat: 5축 채점 점수 클램핑 추가 (I-009)
 ## 5. 파일·모듈 소유권 맵 (자기 영역만 수정)
 
 기능 리스트의 기능 ID(접두어) 기준. **본인 ID 범위의 기능만** 건드린다.
+ID·정책 상세는 `요구사항정의서.md` 참조 (총 81개 기능).
 
 | 담당 | 영역 (기능 ID) | 주 모듈 |
 |---|---|---|
-| **김진희** (팀장) | `AU-*`, `BE-001~004/006`, `K-001/003/004/005`, `R-003`, `MY-002/003/004`, `I-018`, `B-002`, `A-*` | 인증·기본베이스·공고캘린더·결제·구독·관리자 전체·알림·신고 |
-| **정성채** | `BE-005`, `I-001~003`, `I-005~009`, `I-015`, `MY-001/005`, `B-001`, `A-009` | AI 면접엔진·꼬리질문·STAR·5축채점·리포트·추천알고리즘·챗봇응답 |
-| **박서진** | `I-004`, `I-010~014`, `I-016/017` | 카메라/음성 테스트·STT·WPM·영상녹화·시선표정·결과PDF·기업추천 |
-| **김재원** | `E-001~005`, `K-002/006/007` | 교육 학습 콘텐츠·진행률·교육 캘린더·체크리스트 |
-| **김훈기** | `E-006~011`, `MY-007` | AI 퀴즈·정답률·취약개념·경력대비분석·역량 레이더차트 |
-| **김윤수** | `R-001/002/004`, `AU-008/009`, `MY-006` | 이력서 작성·히스토리·헤더(찜/히스토리)·My 이력서 |
+| **김진희** (팀장) | `AU-001~007`, `K-001/003/004/005`, `R-005`, `I-018`, `C-002`, `MY-002/003/007/008`, `B-002`, `A-001~008/010~017` | 인증·공고캘린더·결제·구독·이력서PDF·신고·맞춤진로변경·관리자 전체·알림·약관·광고·만족도·신고AI판정 |
+| **정성채** | `E-012`, `I-001~003/005~009/015/019`, `MY-001/004`, `B-001`, `A-009` | AI 면접엔진·꼬리질문·STAR·5축채점·리포트·텍스트답변·이력서기반추천·종합평가·면접히스토리·추천알고리즘·챗봇응답 |
+| **박서진** | `I-004/010~014/016/017` | 카메라·음성 테스트·STT·WPM·영상녹화·시선표정·공백측정·결과PDF·기업추천 (영상·음성) |
+| **김재원** | `E-001~005`, `K-002/006/007` | 교육 학습 콘텐츠·진행률·교육 캘린더·체크리스트·미완료알림 |
+| **김훈기** | `E-006~011`, `MY-006` | AI 퀴즈·정답률·취약개념·경력대비분석·역량 레이더차트 |
+| **김윤수** | `R-001/002/003/004/006`, `AU-008/009`, `MY-005` | 이력서 작성·AI 이력서 보조·공고별 이력서·진입 가드·헤더(찜/히스토리)·My 이력서 |
 | **이은총** | `C-001` (+ 질문 아카이브) | 자유게시판·질문 은행 |
 
-> 정확한 **폴더 경로**는 각 레포 구조 확정 후 채운다. 경계가 애매한 파일(공통 컴포넌트·공용 util·DB 스키마)은 **공통 영역**으로 보고 반드시 리뷰 후 변경.
+> 정확한 **폴더 경로**는 `PROJECT_STRUCTURE.md`의 폴더 구조를 따른다. 경계가 애매한 파일(공통 컴포넌트·공용 util·DB 스키마·`common/`·`config/`)은 **공통 영역**으로 보고 반드시 리뷰 후 변경.
+> 알림(Kafka)·결제·약관·광고 등 여러 도메인이 얽히는 기능은 김진희(팀장) 영역이므로 손대기 전 확인.
 
 ---
 
 ## 6. 새 클래스를 만들기 전 (pre 규칙)
 
 1. **같은 개념이 이미 있는지 먼저 확인** → 있으면 그 이름을 재사용한다. (제각각·중복 클래스 방지)
-2. 새 이름이면 **접미사 규칙만** 따른다 — `~Controller` · `~Service` · `~Repository` · `~Dto` · `~Request` · `~Response` (백엔드) / React 컴포넌트는 PascalCase, 훅은 `use~`.
+2. 새 이름이면 **접미사 규칙만** 따른다 — `~Controller` · `~Service` · `~ServiceImpl` · `~VO` · `~Mapper` · `~Request` · `~Response` (백엔드) / React 컴포넌트는 PascalCase, 훅은 `use~`. (상세: `PROJECT_STRUCTURE.md` 네이밍 규칙)
 3. **기존 클래스·파일 이름은 담당자 승인 없이 변경 금지.**
 
 **이름 추천 — 채널별 동작**
@@ -127,15 +138,14 @@ feat: 5축 채점 점수 클램핑 추가 (I-009)
 
 ## 7. 레포별 적용 (작업 전 판별)
 
-> (구조·폴더·네이밍·스택 구성의 정본은 `PROJECT_STRUCTURE.md` — 충돌 시 그쪽을 따른다.)
-
 이 저장소가 어떤 레포인지 **파일 존재로 판별**하고, 해당 규칙을 따른다.
+스택이 같은 user/admin은 파일만으로 구분되지 않으므로, **클론된 폴더명·원격 URL로 user/admin을 구분**한다.
 
 | 판별 기준 (루트에 존재) | 레포 | 핵심 추가 규칙 | 넣을 `.gitignore` |
 |---|---|---|---|
 | `requirements_lock.txt` · `server.py` | **AI** | 아래 고정 스택 절대 변경 금지 / `server.py`·RAG·QLoRA 수정은 **정성채 확인** | `gitignore_AI` |
-| `build.gradle` | **백엔드(Spring)** | `application-secret.yml`·`application-local.yml` 커밋 금지 / Gradle `build/` 무시 | `gitignore_backend` |
-| `package.json` | **프론트(React)** | `.env.local` 커밋 금지 / `node_modules` 무시 | `gitignore_frontend` |
+| `build.gradle` (+ 폴더명 `*_backend_user`/`*_admin`) | **백엔드(Spring)** | `application-local.yml`·`.env` 커밋 금지 / Gradle `build/` 무시 | `gitignore_backend` |
+| `package.json` (+ 폴더명 `*_frontend_user`/`*_admin`) | **프론트(React)** | `.env.development`·`.env.production`·`.env.local` 커밋 금지 / `node_modules` 무시 | `gitignore_frontend` |
 
 각 레포 루트에는 **그 레포에 맞는 `.gitignore` 한 개**를 넣는다(파일명을 `.gitignore`로 바꿔 넣는다). `.gitignore`는 git이 글자 그대로 읽으므로 자동 분기되지 않는다 — **누군가 골라 넣어야 한다.**
 
@@ -158,15 +168,22 @@ server.py/requirements_lock.txt→AI), gitignore_* 3개 중 맞는 하나만 골
 
 **백엔드 레포 (Spring) — 고정 스택**
 `DevReady_backend_admin` · `DevReady_backend_user` 공통. 아래 버전·구성으로 통일한다. (버전 변경, 특히 Spring Boot·Java는 별도 브랜치 + 팀 합의 후에만)
-- **Java 21** (Oracle OpenJDK 21) · **Spring Boot 3.5.15** · **Gradle (Groovy)** · **MySQL 8**
+- **Java 21** (Oracle OpenJDK 21) · **Spring Boot 3.5.x (고정: 3.5.15)** · **Gradle (Groovy)** · **MySQL 8**
 - 빌드·패키징: Gradle Groovy DSL · 패키징 **Jar** · 설정 파일은 **YAML**(`application.yml`)
 - 그룹·패키지: 그룹 `com.devready` / 패키지 `com.devready.<repo>` (예: `com.devready.backend_admin`)
-- 주요 의존성: Spring Web · Spring Security · MyBatis Framework · JDBC API · MySQL Driver · Lombok · Spring Boot DevTools · Spring Configuration Processor
-- 비밀값은 `application-secret.yml`·`application-local.yml`에 두고 **커밋 금지** (5번·7번 표 준수)
+- 주요 의존성: Spring Web · Spring Security · MyBatis Framework · JDBC API · MySQL Driver · Lombok · Spring Boot DevTools · Spring Configuration Processor · **spring-dotenv**(.env 로드) · **JWT 라이브러리**(jjwt 등)
+- **알림 — Apache Kafka 도입.** 알림 발송은 Kafka 프로듀서/컨슈머로 처리하고, `notification` 테이블은 영속 저장소로 유지한다. (관련: AU-007·K-005·K-007·A-007)
+- 비밀값은 `.env`에 두고 **커밋 금지** (1번·5번·7번 표 준수). 상세 환경변수: `PROJECT_STRUCTURE.md` 5번
+- 폴더 구조: 기능별 도메인 폴더(controller/service+ServiceImpl/vo/mapper) + `common/`·`config/` 분리 (`PROJECT_STRUCTURE.md` 3번)
 
-**프론트 레포 (React) — UI 라이브러리**
+**프론트 레포 (React) — 스택**
 `DevReady_frontend_admin` · `DevReady_frontend_user` 공통.
-- **MUI(Material UI) 라이브러리를 쓴다.** (`@mui/material` 기반 컴포넌트로 화면 구성)
+- **React + JavaScript + Vite** (TypeScript 미사용 — `.jsx`/`.js`)
+- 상태관리 Zustand · 라우팅 React Router · 통신 Axios
+- **UI 라이브러리: MUI(Material UI)** — `@mui/material` 기반 컴포넌트로 화면 구성
+- 폴더 구조: `src/api·components·hooks·pages·store·utils` (`PROJECT_STRUCTURE.md` 2번)
+- **영상 원본은 DB·서버 저장 금지** (클라이언트 메모리만, 분석 결과 수치만 전송)
+- 프론트 `.env`에는 **공개 가능한 값만**(VITE_ 접두사). client_secret 등 비밀값은 백엔드에만.
 
 ---
 
@@ -192,4 +209,4 @@ server.py/requirements_lock.txt→AI), gitignore_* 3개 중 맞는 하나만 골
 
 ---
 
-*이 문서는 DevReady 3개 레포의 작업 안전 기준이다. 규칙 변경은 PR + 팀 합의로만.*
+*이 문서는 DevReady 5개 레포의 작업 안전 기준이다. 규칙 변경은 PR + 팀 합의로만.*
